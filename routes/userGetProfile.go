@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
-	database "github.com/jin-wk/fc-sia/database/user"
+	database "github.com/jin-wk/fiber-mysql/database/user"
 )
 
 // RequestID : Request id for get profile

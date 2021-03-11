@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/middleware/cors"
 	"github.com/gofiber/fiber/middleware/logger"
 	"github.com/gofiber/template/html"
-	"github.com/jin-wk/fc-sia/database"
-	"github.com/jin-wk/fc-sia/routes"
+	"github.com/jin-wk/fiber-mysql/database"
+	"github.com/jin-wk/fiber-mysql/routes"
 )
 
 // Init : app

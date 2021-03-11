@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jin-wk/fc-sia/api"
+	"github.com/jin-wk/fiber-mysql/api"
 )
 
 func main() {

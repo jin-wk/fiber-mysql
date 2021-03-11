@@ -7,7 +7,7 @@ import (
 
 	// import mysql engine
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jin-wk/fc-sia/config"
+	"github.com/jin-wk/fiber-mysql/config"
 )
 
 // DB : MySQL connection

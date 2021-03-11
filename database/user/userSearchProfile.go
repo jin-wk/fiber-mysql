@@ -1,8 +1,8 @@
 package database
 
 import (
-	"github.com/jin-wk/fc-sia/database"
-	"github.com/jin-wk/fc-sia/models"
+	"github.com/jin-wk/fiber-mysql/database"
+	"github.com/jin-wk/fiber-mysql/models"
 )
 
 // SearchProfile : search user profile by id
