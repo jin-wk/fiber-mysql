@@ -32,32 +32,20 @@ func GetProfile(c *fiber.Ctx) error {
 	}
 	if len(b.ID) < 1 {
 		c.SendStatus(http.StatusBadRequest)
-		return c.JSON(models.Response{
-			Code:    400,
-			Message: "Parameter ID is required",
-		})
+		return c.JSON(models.Response(400, "Parameter ID is required"))
 	}
 	profile, err := database.SearchProfile(b.ID)
 	if profile.IsEmpty() {
 		c.SendStatus(http.StatusNotFound)
-		return c.JSON(models.Response{
-			Code:    404,
-			Message: "Not Found User",
-		})
+		return c.JSON(models.Response(404, "Not Found User"))
 	}
 	if err != nil {
 		c.SendStatus(http.StatusBadRequest)
-		return c.JSON(models.Response{
-			Code:    400,
-			Message: "Error Occureed" + err.Error(),
-		})
+		return c.JSON(models.Response(400, "Error Occureed"+err.Error()))
 	}
 	if err := c.JSON(profile); err != nil {
 		c.SendStatus(http.StatusInternalServerError)
-		return c.JSON(models.Response{
-			Code:    500,
-			Message: "Error Occureed" + err.Error(),
-		})
+		return c.JSON(models.Response(500, "Error Occureed"+err.Error()))
 	}
 	c.Accepts("application/json")
 	c.SendStatus(http.StatusOK)
