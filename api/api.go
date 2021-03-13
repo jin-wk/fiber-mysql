@@ -3,11 +3,13 @@ package api
 import (
 	"log"
 
+	fiberSwagger "github.com/arsmn/fiber-swagger"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/fiber/middleware/cors"
 	"github.com/gofiber/fiber/middleware/logger"
 	"github.com/gofiber/template/html"
 	"github.com/jin-wk/fiber-mysql/database"
+	_ "github.com/jin-wk/fiber-mysql/docs"
 	"github.com/jin-wk/fiber-mysql/routes"
 )
 
@@ -30,9 +32,10 @@ func Init() {
 	}))
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{
-			"Title": "FC-SIA",
+			"Title": "Fiber-MySQL",
 		})
 	})
 	app.Post("/profile", routes.GetProfile)
+	app.Get("/swagger/*", fiberSwagger.Handler)
 	log.Fatal(app.Listen(":3000"))
 }

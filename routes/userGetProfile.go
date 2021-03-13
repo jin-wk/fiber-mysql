@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber"
 	database "github.com/jin-wk/fiber-mysql/database/user"
+	"github.com/jin-wk/fiber-mysql/models"
 )
 
 // RequestID : Request id for get profile
@@ -12,32 +13,51 @@ type RequestID struct {
 	ID string `json:"ID"`
 }
 
-// GetProfile : get user profile
+// GetProfile godoc
+// @Summary Get a Profile
+// @Description Get Profile by ID
+// @ID get-profile-by-id
+// @tags Profile
+// @Accept  json
+// @Produce  json
+// @Param ID body RequestID true "ID"
+// @Success 200 {object} models.User
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /profile [post]
 func GetProfile(c *fiber.Ctx) error {
 	b := new(RequestID)
 	if err := c.BodyParser(b); err != nil {
 		return err
 	}
 	if len(b.ID) < 1 {
-		c.SendString(b.ID)
-		c.SendString("Parameter ID is required")
 		c.SendStatus(http.StatusBadRequest)
-		return nil
+		return c.JSON(models.Response{
+			Code:    400,
+			Message: "Parameter ID is required",
+		})
 	}
 	profile, err := database.SearchProfile(b.ID)
 	if profile.IsEmpty() {
-		c.SendString("Not Found User")
 		c.SendStatus(http.StatusNotFound)
-		return nil
+		return c.JSON(models.Response{
+			Code:    404,
+			Message: "Not Found User",
+		})
 	}
 	if err != nil {
-		c.SendString("Error Occureed" + err.Error())
 		c.SendStatus(http.StatusBadRequest)
-		return nil
+		return c.JSON(models.Response{
+			Code:    400,
+			Message: "Error Occureed" + err.Error(),
+		})
 	}
 	if err := c.JSON(profile); err != nil {
-		c.Status(500).SendString(err.Error())
-		return nil
+		c.SendStatus(http.StatusInternalServerError)
+		return c.JSON(models.Response{
+			Code:    500,
+			Message: "Error Occureed" + err.Error(),
+		})
 	}
 	c.Accepts("application/json")
 	c.SendStatus(http.StatusOK)

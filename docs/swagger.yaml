@@ -1,0 +1,75 @@
+basePath: /
+definitions:
+  models.Response:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      back_number:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      preferred_position:
+        type: string
+      user_id:
+        type: string
+    type: object
+  routes.RequestID:
+    properties:
+      ID:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: note@kakao.com
+    name: jin-wk
+    url: https://github.com/jin-wk
+  description: Basic Application by Fiber with MySQL
+  title: Fiber-MySQL
+  version: "1.0"
+paths:
+  /profile:
+    post:
+      consumes:
+      - application/json
+      description: Get Profile by ID
+      operationId: get-profile-by-id
+      parameters:
+      - description: ID
+        in: body
+        name: ID
+        required: true
+        schema:
+          $ref: '#/definitions/routes.RequestID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a Profile
+      tags:
+      - Profile
+swagger: "2.0"
