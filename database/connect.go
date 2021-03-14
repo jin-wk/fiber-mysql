@@ -1,19 +1,16 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
+	"time"
 
-	// import mysql engine
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jin-wk/fiber-mysql/config"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-// DB : MySQL connection
-var DB = Connect()
-
 var (
+	DB       *gorm.DB
 	host     = config.Config("DB_HOST")
 	port     = config.Config("DB_PORT")
 	username = config.Config("DB_USERNAME")
@@ -22,15 +19,20 @@ var (
 )
 
 // Connect : connect to DB
-func Connect() *sql.DB {
-	var err error
-	client, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, database))
+func Connect() (err error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True", username, password, host, port, database)
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal(err.Error())
-		return client
+		return err
 	}
-	if err = client.Ping(); err != nil {
-		log.Fatal(err.Error())
+
+	con, err := DB.DB()
+	if err != nil {
+		return err
 	}
-	return client
+	con.SetMaxIdleConns(10)
+	con.SetMaxOpenConns(50)
+	con.SetConnMaxLifetime(time.Hour)
+
+	return nil
 }

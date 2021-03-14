@@ -27,9 +27,9 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/profile": {
-            "post": {
-                "description": "Get Profile by ID",
+        "/api/user/{id}": {
+            "get": {
+                "description": "Get User Profile by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -37,38 +37,47 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Profile"
+                    "users"
                 ],
-                "summary": "Get a Profile",
-                "operationId": "get-profile-by-id",
+                "summary": "Get a User Profile",
                 "parameters": [
                     {
-                        "description": "ID",
-                        "name": "ID",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/routes.RequestID"
-                        }
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.ResponseModel"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.User"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.Response"
+                            "$ref": "#/definitions/models.ResponseModel"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "503": {
+                        "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/models.Response"
+                            "$ref": "#/definitions/models.ResponseModel"
                         }
                     }
                 }
@@ -76,14 +85,17 @@ var doc = `{
         }
     },
     "definitions": {
-        "models.Response": {
+        "models.ResponseModel": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "integer"
+                "data": {
+                    "type": "object"
                 },
                 "message": {
                     "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         },
@@ -95,6 +107,9 @@ var doc = `{
                 },
                 "back_number": {
                     "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
@@ -111,15 +126,10 @@ var doc = `{
                 "preferred_position": {
                     "type": "string"
                 },
-                "user_id": {
+                "updated_at": {
                     "type": "string"
-                }
-            }
-        },
-        "routes.RequestID": {
-            "type": "object",
-            "properties": {
-                "ID": {
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

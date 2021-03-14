@@ -8,9 +8,17 @@
 </head>
 <body>
     <h1>Fiber-MySQL Test Page</h1>
-    <form action="/profile" method="POST">
-        <input placeholder="ID" type="text" name="ID"/>
-        <input type="submit" value="SEND">
-    </form>
+    <input id="id" placeholder="ID" type="text" name="ID"/>
+    <input id="send" type="button" value="SEND">
 </body>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+    $("#send").click(function () {
+        var id = $("#id").val();
+        // $.get(`/api/user/${id}`);
+        $(location).attr('href', `/api/user/${id}`);
+    })
+</script>
+
 </html>

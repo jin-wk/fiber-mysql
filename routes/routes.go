@@ -1,21 +1,17 @@
-package api
+package routes
 
 import (
-	"log"
-
 	fiberSwagger "github.com/arsmn/fiber-swagger"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/fiber/middleware/cors"
 	"github.com/gofiber/fiber/middleware/logger"
 	"github.com/gofiber/template/html"
-	"github.com/jin-wk/fiber-mysql/database"
 	_ "github.com/jin-wk/fiber-mysql/docs"
-	"github.com/jin-wk/fiber-mysql/routes"
+	"github.com/jin-wk/fiber-mysql/handlers"
 )
 
-// Init : app
-func Init() {
-	defer database.DB.Close()
+// New : create an instance
+func New() *fiber.App {
 	app := fiber.New(fiber.Config{
 		// Prefork: true,
 		Views: html.New("./views", ".html"),
@@ -26,7 +22,7 @@ func Init() {
 		AllowCredentials: true,
 	}))
 	app.Use(logger.New(logger.Config{
-		Format:     "[${time}] [${path}] [${method}] ${body} ${resBody} > ${status}\n",
+		Format:     "${cyan}[${time}] ${blue}[${path}] ${red}[${method}] ${white}${body} ${white}${resBody} > ${blue}${status}\n",
 		TimeFormat: "2006-01-02 15:04:05.000",
 		TimeZone:   "Asia/Seoul",
 	}))
@@ -35,7 +31,9 @@ func Init() {
 			"Title": "Fiber-MySQL",
 		})
 	})
-	app.Post("/profile", routes.GetProfile)
 	app.Get("/swagger/*", fiberSwagger.Handler)
-	log.Fatal(app.Listen(":3000"))
+	api := app.Group(("/api"))
+	api.Get("/user/:id", handlers.GetUser)
+
+	return app
 }

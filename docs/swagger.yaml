@@ -1,11 +1,13 @@
 basePath: /
 definitions:
-  models.Response:
+  models.ResponseModel:
     properties:
-      code:
-        type: integer
+      data:
+        type: object
       message:
         type: string
+      success:
+        type: boolean
     type: object
   models.User:
     properties:
@@ -13,6 +15,8 @@ definitions:
         type: string
       back_number:
         type: integer
+      created_at:
+        type: string
       id:
         type: integer
       name:
@@ -23,12 +27,9 @@ definitions:
         type: string
       preferred_position:
         type: string
-      user_id:
+      updated_at:
         type: string
-    type: object
-  routes.RequestID:
-    properties:
-      ID:
+      user_id:
         type: string
     type: object
 host: localhost:3000
@@ -41,35 +42,38 @@ info:
   title: Fiber-MySQL
   version: "1.0"
 paths:
-  /profile:
-    post:
+  /api/user/{id}:
+    get:
       consumes:
       - application/json
-      description: Get Profile by ID
-      operationId: get-profile-by-id
+      description: Get User Profile by ID
       parameters:
-      - description: ID
-        in: body
-        name: ID
+      - description: id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/routes.RequestID'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.User'
+              type: object
+        "404":
+          description: Not Found
           schema:
-            $ref: '#/definitions/models.Response'
-        "500":
-          description: Internal Server Error
+            $ref: '#/definitions/models.ResponseModel'
+        "503":
+          description: Service Unavailable
           schema:
-            $ref: '#/definitions/models.Response'
-      summary: Get a Profile
+            $ref: '#/definitions/models.ResponseModel'
+      summary: Get a User Profile
       tags:
-      - Profile
+      - users
 swagger: "2.0"

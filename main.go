@@ -1,7 +1,11 @@
 package main
 
 import (
-	"github.com/jin-wk/fiber-mysql/api"
+	"log"
+
+	"github.com/jin-wk/fiber-mysql/database"
+	"github.com/jin-wk/fiber-mysql/models"
+	"github.com/jin-wk/fiber-mysql/routes"
 )
 
 // @title Fiber-MySQL
@@ -13,5 +17,10 @@ import (
 // @host localhost:3000
 // @BasePath /
 func main() {
-	api.Init()
+	if err := database.Connect(); err != nil {
+		log.Panic("Can't connect database: ", err.Error())
+	}
+	database.DB.AutoMigrate(&models.User{})
+	app := routes.New()
+	log.Fatal(app.Listen(":3000"))
 }
