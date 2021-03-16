@@ -22,7 +22,7 @@ func New() *fiber.App {
 		AllowCredentials: true,
 	}))
 	app.Use(logger.New(logger.Config{
-		Format:     "${cyan}[${time}] ${blue}[${path}] ${red}[${method}] ${white}${body} ${white}${resBody} > ${blue}${status}\n",
+		Format:     "${yellow}[${time}] ${blue}[${path}] ${green}[${method}] ${white}${body} ${white}${resBody} > ${yellow}${status}\n",
 		TimeFormat: "2006-01-02 15:04:05.000",
 		TimeZone:   "Asia/Seoul",
 	}))

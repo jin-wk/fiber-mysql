@@ -2,12 +2,12 @@ basePath: /
 definitions:
   models.ResponseModel:
     properties:
+      code:
+        type: integer
       data:
         type: object
       message:
         type: string
-      success:
-        type: boolean
     type: object
   models.User:
     properties:

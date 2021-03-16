@@ -26,10 +26,10 @@ func GetUser(c *fiber.Ctx) error {
 	if err := database.DB.First(&user, id).Error; err != nil {
 		switch err.Error() {
 		case "record not found":
-			return c.Status(http.StatusNotFound).JSON(models.Response(false, "Not Found", nil))
+			return c.Status(http.StatusNotFound).JSON(models.Response(2000, "Not Found", nil))
 		default:
-			return c.Status(http.StatusServiceUnavailable).JSON(models.Response(false, err.Error(), nil))
+			return c.Status(http.StatusServiceUnavailable).JSON(models.Response(3000, err.Error(), nil))
 		}
 	}
-	return c.JSON(models.Response(true, "Success", *user))
+	return c.JSON(models.Response(1000, "Success", *user))
 }

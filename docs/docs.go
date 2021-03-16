@@ -88,14 +88,14 @@ var doc = `{
         "models.ResponseModel": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "data": {
                     "type": "object"
                 },
                 "message": {
                     "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             }
         },

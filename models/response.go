@@ -2,14 +2,14 @@ package models
 
 // Response : type response struct
 type ResponseModel struct {
-	Success bool        `json:"success"`
+	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
-func Response(Success bool, message string, data interface{}) ResponseModel {
+func Response(code int, message string, data interface{}) ResponseModel {
 	return ResponseModel{
-		Success: Success,
+		Code:    code,
 		Message: message,
 		Data:    data,
 	}
