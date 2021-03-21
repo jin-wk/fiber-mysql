@@ -11,11 +11,11 @@ import (
 
 var (
 	DB       *gorm.DB
-	host     = config.Config("DB_HOST")
-	port     = config.Config("DB_PORT")
-	username = config.Config("DB_USERNAME")
-	password = config.Config("DB_PASSWORD")
-	database = config.Config("DB_DATABASE")
+	host     = config.Get("DB_HOST")
+	port     = config.Get("DB_PORT")
+	username = config.Get("DB_USERNAME")
+	password = config.Get("DB_PASSWORD")
+	database = config.Get("DB_DATABASE")
 )
 
 // Connect : connect to DB
